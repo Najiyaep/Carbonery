@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "977763828916",
+    "project_id": "carbon-145bc",
+    "storage_bucket": "carbon-145bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977763828916:android:e43346699166678e9143e1",
+        "android_client_info": {
+          "package_name": "com.example.carbonery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHHstQQxRA_ZtcES9HoYM9xDFcWU5nkMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977763828916:android:03fd651ab45235b59143e1",
+        "android_client_info": {
+          "package_name": "com.example.flutterfirebasedemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHHstQQxRA_ZtcES9HoYM9xDFcWU5nkMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
