@@ -4,13 +4,181 @@ import 'package:carbonery/screens/common/transport_page.dart';
 import 'package:carbonery/screens/common/waste_page.dart';
 import 'package:carbonery/widgets/app_colors.dart';
 import 'package:carbonery/widgets/apptext.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/user_model.dart';
 import 'diet_page.dart';
 
+// class HomePage extends StatefulWidget {
+//   const HomePage({Key? key}) : super(key: key);
+//
+//   @override
+//   State<HomePage> createState() => _HomePageState();
+// }
+//
+// class _HomePageState extends State<HomePage> {
+//   int touchedIndex = -1;
+//  var totalDietConsumption ;
+//  var totalHomeConsumption ;
+//   var totalTransportConsumption ;
+//   var totalWasteConsumption;
+//  var isLoading = true; // Loading state
+//   var totalConsumption;
+//   UserModel? currentUser;
+//
+//
+//
+//   getTotalEmission() async {
+//     final prefs = await SharedPreferences.getInstance();
+//
+//     final val=
+//
+//
+//
+//     totalDietConsumption =  await prefs.getDouble('total_emission_diet')??0.0;
+//     totalHomeConsumption =  await prefs.getDouble('total_emission_energy')??0.0;
+//     totalTransportConsumption = await prefs.getDouble('total_emission_transport')?? 0.0;
+//     totalWasteConsumption = await prefs.getDouble('total_emission_waste')??0.0;
+//     isLoading = false; // Data fetched, stop loading
+//
+//     totalConsumption = totalDietConsumption + totalHomeConsumption + totalTransportConsumption + totalWasteConsumption;
+//
+//
+//
+//   }
+//   @override
+//   void initState() {
+//     super.initState();
+//
+//     getTotalEmission();
+//     _fetchCurrentUser();
+//
+//
+//   }
+//   Future<void> _fetchCurrentUser() async {
+//     try {
+//       User? user = FirebaseAuth.instance.currentUser;
+//       if (user != null) {
+//         DocumentSnapshot userDoc = await FirebaseFirestore.instance
+//             .collection('user')
+//             .doc(user.uid)
+//             .get();
+//         setState(() {
+//           currentUser = UserModel.fromJson(userDoc);
+//         });
+//       }
+//     } catch (e) {
+//       print('Error fetching user data: $e');
+//     }
+//   }
+//   Future<void> fetchData() async {
+//     try {
+//
+//       var id=await FirebaseAuth.instance.currentUser!.uid;
+//       print(id);
+//       // Fetch the document for the current user
+//       String userId = id; // Replace with the actual user ID
+//       DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('emission').doc(userId).get();
+//
+//       if (userDoc.exists) {
+//         setState(() {
+//           totalDietConsumption = userDoc['total_emission'] ?? 0.0;
+//           totalHomeConsumption = userDoc['total_home_consumption'] ?? 0.0;
+//           totalTransportConsumption = userDoc['total_emission'] ?? 0.0;
+//           totalWasteConsumption = userDoc['total_emission'] ?? 0.0;
+//           isLoading = false; // Data fetched, stop loading
+//
+//           totalConsumption = totalDietConsumption + totalHomeConsumption + totalTransportConsumption + totalWasteConsumption;
+//
+//
+//
+//         });
+//       } else {
+//         setState(() {
+//           isLoading = false; // No data found, stop loading
+//         });
+//       }
+//     } catch (error) {
+//       print('Error fetching data: $error');
+//       setState(() {
+//         isLoading = false; // Error occurred, stop loading
+//       });
+//     }
+//   }
+//
+//   List<PieChartSectionData> showingSections() {
+//   totalConsumption = totalDietConsumption + totalHomeConsumption + totalTransportConsumption + totalWasteConsumption;
+//
+//     return [
+//       PieChartSectionData(
+//         color: Color(0xffbc4b51),
+//         value: totalDietConsumption / totalConsumption * 100,
+//         title: '${(totalDietConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+//         radius: touchedIndex == 0 ? 60.0 : 50.0,
+//         titleStyle: TextStyle(
+//           fontSize: touchedIndex == 0 ? 25.0 : 16.0,
+//           fontWeight: FontWeight.bold,
+//           color: AppColors.mainTextColor1,
+//           shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+//         ),
+//       ),
+//       PieChartSectionData(
+//         color: Color(0xffe5c687),
+//         value: totalHomeConsumption / totalConsumption * 100,
+//         title: '${(totalHomeConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+//         radius: touchedIndex == 1 ? 60.0 : 50.0,
+//         titleStyle: TextStyle(
+//           fontSize: touchedIndex == 1 ? 25.0 : 16.0,
+//           fontWeight: FontWeight.bold,
+//           color: AppColors.mainTextColor1,
+//           shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+//         ),
+//       ),
+//       PieChartSectionData(
+//         color: Color(0xff38a3a5),
+//         value: totalTransportConsumption / totalConsumption * 100,
+//         title: '${(totalTransportConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+//         radius: touchedIndex == 2 ? 60.0 : 50.0,
+//         titleStyle: TextStyle(
+//           fontSize: touchedIndex == 2 ? 25.0 : 16.0,
+//           fontWeight: FontWeight.bold,
+//           color: AppColors.mainTextColor1,
+//           shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+//         ),
+//       ),
+//       PieChartSectionData(
+//         color: Color(0xff6a5d7b),
+//         value: totalWasteConsumption / totalConsumption * 100,
+//         title: '${(totalWasteConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+//         radius: touchedIndex == 3 ? 60.0 : 50.0,
+//         titleStyle: TextStyle(
+//           fontSize: touchedIndex == 3 ? 25.0 : 16.0,
+//           fontWeight: FontWeight.bold,
+//           color: AppColors.mainTextColor1,
+//           shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+//         ),
+//       ),
+//
+//     ];
+//
+//     setState(() {
+//
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//     print(totalTransportConsumption);
+//     double totalConsumption = totalDietConsumption + totalHomeConsumption + totalTransportConsumption + totalWasteConsumption;
+//     double maxConsumption =50.0; // Set this to the maximum expected consumption value if known
+//     double consumptionPercent = (totalConsumption / maxConsumption).clamp(0.0, 1.0); // Normalize to 0-1 range for percent
+// print(consumptionPercent);
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -20,33 +188,200 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int touchedIndex = -1;
+  double totalDietConsumption = 0.0;
+  double totalHomeConsumption = 0.0;
+  double totalTransportConsumption = 0.0;
+  double totalWasteConsumption = 0.0;
+  bool isLoading = true;
+  double totalConsumption = 0.0;
+  UserModel? currentUser;
+
+  Future<void> getTotalEmission() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      totalDietConsumption = prefs.getDouble('total_emission_diet') ?? 0.0;
+      totalHomeConsumption = prefs.getDouble('total_emission_energy') ?? 0.0;
+      totalTransportConsumption = prefs.getDouble('total_emission_transport') ?? 0.0;
+      totalWasteConsumption = prefs.getDouble('total_emission_waste') ?? 0.0;
+
+      totalConsumption = totalDietConsumption + totalHomeConsumption + totalTransportConsumption + totalWasteConsumption;
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getTotalEmission();
+    _fetchCurrentUser();
+    fetchData();
+  }
+
+  Future<void> _fetchCurrentUser() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(user.uid)
+            .get();
+        setState(() {
+          currentUser = UserModel.fromJson(userDoc);
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
+  Future<void> fetchData() async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot homeDoc = await FirebaseFirestore.instance.collection('emission').doc(userId).get();
+      DocumentSnapshot dietDoc = await FirebaseFirestore.instance.collection('diet_emissions').doc(userId).get();
+      DocumentSnapshot transportDoc = await FirebaseFirestore.instance.collection('transport_emissions').doc(userId).get();
+      DocumentSnapshot wasteDoc = await FirebaseFirestore.instance.collection('waste_emissions').doc(userId).get();
+
+      setState(() {
+        totalHomeConsumption = homeDoc.exists ? homeDoc['total_home_consumption'] ?? 0.0 : 0.0;
+        totalDietConsumption = dietDoc.exists ? dietDoc['total_emission'] ?? 0.0 : 0.0;
+        totalTransportConsumption = transportDoc.exists ? transportDoc['total_emission'] ?? 0.0 : 0.0;
+        totalWasteConsumption = wasteDoc.exists ? wasteDoc['total_emission'] ?? 0.0 : 0.0;
+
+        totalConsumption = totalDietConsumption + totalHomeConsumption + totalTransportConsumption + totalWasteConsumption;
+        isLoading = false;
+      });
+    } catch (error) {
+      print('Error fetching data: $error');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  List<PieChartSectionData> showingSections() {
+    return [
+      PieChartSectionData(
+        color: Color(0xffbc4b51),
+        value: totalDietConsumption / totalConsumption * 100,
+        title: '${(totalDietConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+        radius: touchedIndex == 0 ? 60.0 : 50.0,
+        titleStyle: TextStyle(
+          fontSize: touchedIndex == 0 ? 25.0 : 16.0,
+          fontWeight: FontWeight.bold,
+          color: AppColors.mainTextColor1,
+          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+        ),
+      ),
+      PieChartSectionData(
+        color: Color(0xffe5c687),
+        value: totalHomeConsumption / totalConsumption * 100,
+        title: '${(totalHomeConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+        radius: touchedIndex == 1 ? 60.0 : 50.0,
+        titleStyle: TextStyle(
+          fontSize: touchedIndex == 1 ? 25.0 : 16.0,
+          fontWeight: FontWeight.bold,
+          color: AppColors.mainTextColor1,
+          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+        ),
+      ),
+      PieChartSectionData(
+        color: Color(0xff38a3a5),
+        value: totalTransportConsumption / totalConsumption * 100,
+        title: '${(totalTransportConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+        radius: touchedIndex == 2 ? 60.0 : 50.0,
+        titleStyle: TextStyle(
+          fontSize: touchedIndex == 2 ? 25.0 : 16.0,
+          fontWeight: FontWeight.bold,
+          color: AppColors.mainTextColor1,
+          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+        ),
+      ),
+      PieChartSectionData(
+        color: Color(0xff6a5d7b),
+        value: totalWasteConsumption / totalConsumption * 100,
+        title: '${(totalWasteConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+        radius: touchedIndex == 3 ? 60.0 : 50.0,
+        titleStyle: TextStyle(
+          fontSize: touchedIndex == 3 ? 25.0 : 16.0,
+          fontWeight: FontWeight.bold,
+          color: AppColors.mainTextColor1,
+          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+        ),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    double maxConsumption = 50.0; // Set this to the maximum expected consumption value if known
+    double consumptionPercent = (totalConsumption / maxConsumption).clamp(0.0, 1.0); // Normalize to 0-1 range for percent
 
+    return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
-            child: Column(
+            child: isLoading
+                ? Center(child: CircularProgressIndicator()) // Show loading indicator
+                : Column(
+
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 60,),
-                CircularPercentIndicator(
-                  radius: 140,
-                  lineWidth: 20,
-                  percent: 0.4,
-                  progressColor: Colors.green,
-                  backgroundColor: Colors.green.shade100,
-                  circularStrokeCap: CircularStrokeCap.round,
-                ),
-                SizedBox(height: 60,),
+                SizedBox(height: 60),
+                // CircularPercentIndicator(
+                //   radius: 140,
+                //   lineWidth: 20,
+                //   percent: (totalConsumption / maxConsumption).clamp(0.0, 1.0), // Ensure percent is between 0.0 and 1.0
+                //   center: Text(
+                //     '${((totalConsumption / maxConsumption)/100).toStringAsFixed(1)}%', // Show total emission percentage
+                //     style: TextStyle(
+                //       fontSize: 20.0,
+                //       fontWeight: FontWeight.bold,
+                //       color: AppColors.mainTextColor1,
+                //     ),
+                //   ),
+                //   progressColor: Colors.green,
+                //   backgroundColor: Colors.green.shade100,
+                //   circularStrokeCap: CircularStrokeCap.round,
+                // ),
+                //
+                currentUser != null
+                    ? RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Welcome ",
+                      ),
+                      TextSpan(
+                        text: "${currentUser!.name}",
+                        style: TextStyle(fontSize: 28, color: Colors.green),
+                      ),
+                      WidgetSpan(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            '👋',
+                            style:
+                            TextStyle(fontSize: 30, color: Colors.orange),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                    : Center(child: CircularProgressIndicator()),
+                SizedBox(height: 60),
                 AppText(data: "Your Consumption"),
                 SizedBox(height: 10),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => GraphPage()),
@@ -83,7 +418,6 @@ class _HomePageState extends State<HomePage> {
                                   child: Icon(Icons.restaurant, color: Colors.white, size: 18),
                                 ),
                                 SizedBox(width: 15),
-                                //Text("Electricity")
                               ],
                             ),
                             SizedBox(height: 5),
@@ -99,7 +433,6 @@ class _HomePageState extends State<HomePage> {
                                   child: Icon(Icons.solar_power, color: Colors.white, size: 18),
                                 ),
                                 SizedBox(width: 15),
-                                //Text("Electricity")
                               ],
                             ),
                             SizedBox(height: 5),
@@ -115,7 +448,6 @@ class _HomePageState extends State<HomePage> {
                                   child: Icon(Icons.emoji_transportation, color: Colors.white, size: 18),
                                 ),
                                 SizedBox(width: 15),
-                                //Text("Electricity")
                               ],
                             ),
                             SizedBox(height: 5),
@@ -131,7 +463,6 @@ class _HomePageState extends State<HomePage> {
                                   child: Icon(Icons.delete, color: Colors.white, size: 18),
                                 ),
                                 SizedBox(width: 15),
-                                //Text("Electricity",)
                               ],
                             ),
                           ],
@@ -152,8 +483,7 @@ class _HomePageState extends State<HomePage> {
                                         touchedIndex = -1;
                                         return;
                                       }
-                                      touchedIndex = pieTouchResponse
-                                          .touchedSection!.touchedSectionIndex;
+                                      touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
                                     });
                                   },
                                 ),
@@ -172,7 +502,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(height: 10),
-
                 Container(
                   height: 200,
                   width: double.infinity,
@@ -223,7 +552,13 @@ class _HomePageState extends State<HomePage> {
                           Positioned(
                             bottom: 30,
                             left: 30,
-                            child: ElevatedButton(
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ))
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -233,7 +568,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                               child: Text(
-                                'Enter',
+                                '    Enter    ',
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -306,7 +641,13 @@ class _HomePageState extends State<HomePage> {
                           Positioned(
                             bottom: 30,
                             left: 30,
-                            child: ElevatedButton(
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ))
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -316,7 +657,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                               child: Text(
-                                'Enter',
+                                '    Enter    ',
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -389,7 +730,13 @@ class _HomePageState extends State<HomePage> {
                           Positioned(
                             bottom: 30,
                             left: 30,
-                            child: ElevatedButton(
+                            child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ))
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -399,7 +746,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                               child: Text(
-                                'Enter',
+                                '    Enter    ',
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -472,7 +819,13 @@ class _HomePageState extends State<HomePage> {
                           Positioned(
                             bottom: 30,
                             left: 30,
-                            child: ElevatedButton(
+                            child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ))
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -482,7 +835,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                               child: Text(
-                                'Enter',
+                                '    Enter    ',
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -504,80 +857,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(height: 10),
-
-                // Add more container widgets here
               ],
             ),
           ),
         ],
       ),
     );
-
-  }
-
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: Color(0xffbc4b51),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: Color(0xffe5c687),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: Color(0xff38a3a5),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: Color(0xff6a5d7b),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
   }
 }

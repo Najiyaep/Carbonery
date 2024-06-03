@@ -1,10 +1,11 @@
-import 'package:carbonery/constants/constant.dart';
+import 'package:carbonery/screens/admin/expert_handle.dart';
+import 'package:carbonery/screens/admin/feedback_page.dart';
+import 'package:carbonery/screens/admin/user_handle.dart';
 import 'package:carbonery/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class AdminHome extends StatefulWidget {
-  const AdminHome({super.key});
+  const AdminHome({Key? key}) : super(key: key);
 
   @override
   State<AdminHome> createState() => _AdminHomeState();
@@ -17,322 +18,148 @@ class _AdminHomeState extends State<AdminHome> {
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.grey.shade300,
-      // drawer: Drawer(backgroundColor: Colors.grey.shade300,
-      // child: Column(
-      //   children: [
-      //     DrawerHeader(child: Icon(Icons.favorite)),
-      //     ListTile(
-      //       leading: Icon(Icons.home),
-      //       title: Text('Dashboard'),
-      //     ),
-      // ListTile(
-      //   leading: Icon(Icons.chat),
-      //   title: Text('Message'),
-      // ),
-      //     ListTile(
-      //       leading: Icon(Icons.settings),
-      //       title: Text('Settings'),
-      //     ),
-      //     ListTile(
-      //       leading: Icon(Icons.logout),
-      //       title: Text('Logout'),
-      //       onTap: ()
-      //       async{
-      //
-      //         await AuthService().logout().then((value) => Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false));
-      //       },
-      //     ),
-      //   ],
-      // ),
-      // ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: Column(
           children: [
-            Drawer(
-              backgroundColor: Colors.grey.shade300,
-              width: 200,
-              child: Column(
-                children: [
-                  DrawerHeader(child: CircleAvatar(
-                    maxRadius: 50,
-                    child: Image.asset(
-                     'assets/img/user.png',
-                      width: 200,
-                     height: 200,
-                   ),
-                  ),),
-                  ListTile(
-                    leading: Icon(Icons.home),
-                    title: Text('Dashboard'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.feedback),
-                    title: Text('Message'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text('Logout'),
-                    onTap: ()
-                    async{
-
-                      await AuthService().logout().then((value) => Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false));
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            // First half of page
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: [
-                  // First 4 boxes in grid
-                  AspectRatio(
-                    aspectRatio: 4,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: GridView.builder(
-                        itemCount: 4,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
-                        ),
-                        itemBuilder: (context, index) {
-                          // Define image paths, texts, and subtitles for each grid item
-                          List<String> imagePaths = [
-                            'assets/img/group.png', // Image 1 for first grid
-                            'assets/img/human-footprints.png', // Image 2 for second grid
-                            'assets/img/high-quality.png', // Image 3 for third grid
-                            'assets/img/feedback.png', // Image 4 for fourth grid
-                          ];
-                          List<String> texts = [
-                            '10',
-                            '512Kt',
-                            '4',
-                            '10',
-                          ];
-                          List<String> subtitles = [
-                            'Users',
-                            'Total Emission',
-                            'Top Contributors',
-                            'Feedbacks',
-                          ];
-
-                          return Container(
-                            width: 150,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.white70,
-                              borderRadius: BorderRadius.circular(10), // Adjust as needed
-                            ),
-                            margin: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  imagePaths[index],
-                                  fit: BoxFit.cover,
-                                  height: 50,
-                                  width: 50,
-                                ),
-                                SizedBox(height: 8), // Add spacing between image and text
-                                Text(
-                                  texts[index],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 4), // Add spacing between text and subtitle
-                                Text(
-                                  subtitles[index],
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-
-                        },
-                      ),
-                    ),
-                  ),
-
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 7,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          color: Colors.white70, // Example color, replace as needed
-                          margin: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            title: Text('Day ${index + 1}'),
-                            // Other tile properties as needed
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Second half of page
-          Expanded(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 400,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey[400],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Row(
-                          //   children: [
-                          //      SizedBox(
-                          //        height: 70,
-                          //        width: 70,
-                          //      child: ClipRRect(
-                          //       borderRadius: BorderRadius.circular(40),
-                          //        child: Placeholder(), // Placeholder for the image
-                          //       ),
-                          //      ),
-                          //    ],
-                          //  ),
-                          Expanded(
-                            child: Center(
-                              child: SfRadialGauge(
-                                axes: <RadialAxis>[
-                                  RadialAxis(
-                                    radiusFactor: 0.5,
-                                    pointers: <GaugePointer>[
-                                      RangePointer(
-                                        value: 40,
-                                        cornerStyle: CornerStyle.bothCurve,
-                                        color: Color(0xffbc4b51),
-                                      )
-                                    ],
-                                    interval: 5,
-                                    startAngle: 5,
-                                    endAngle: 5,
-                                    showTicks: false,
-                                    showLabels: false,
-                                    annotations: <GaugeAnnotation>[
-                                      GaugeAnnotation(
-                                        widget: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '40%',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Carbon Footprint',
-                                              style: TextStyle(fontSize: 18),
-                                            )
-                                          ],
-                                        ),
-                                        angle: 250,
-                                        positionFactor: 0.1,
-                                      ),
-                                    ],
-                                  ),
-                                  RadialAxis(
-                                    radiusFactor: 0.65,
-                                    pointers: [
-                                      RangePointer(
-                                        value: 30,
-                                        cornerStyle: CornerStyle.bothCurve,
-                                        color: Color(0xffe5c687),
-                                      ),
-                                    ],
-                                    interval: 5,
-                                    startAngle: 5,
-                                    endAngle: 5,
-                                    showTicks: false,
-                                    showLabels: false,
-                                  ),
-                                  RadialAxis(
-                                    radiusFactor: 0.8,
-                                    pointers: [
-                                      RangePointer(
-                                        value: 15,
-                                        cornerStyle: CornerStyle.bothCurve,
-                                        color: Color(0xff38a3a5),
-                                      ),
-                                    ],
-                                    interval: 5,
-                                    startAngle: 5,
-                                    endAngle: 5,
-                                    showTicks: false,
-                                    showLabels: false,
-                                  ),
-                                  RadialAxis(
-                                    radiusFactor: 0.95,
-                                    pointers: [
-                                      RangePointer(
-                                        value: 15,
-                                        cornerStyle: CornerStyle.bothCurve,
-                                        color: Color(0xff6a5d7b),
-                                      ),
-                                    ],
-                                    interval: 5,
-                                    startAngle: 5,
-                                    endAngle: 5,
-                                    showTicks: false,
-                                    showLabels: false,
-                                  ),
-                                  // Add other RadialAxis as needed
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+            DrawerHeader(
+              child: CircleAvatar(
+                maxRadius: 50,
+                child: Image.asset(
+                  'assets/img/user.png',
+                  width: 200,
+                  height: 200,
                 ),
-
-          // List of stuff
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Dashboard'),
+            ),
+            ListTile(
+              leading: Icon(Icons.chat),
+              title: Text('Message'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FeedbackView(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () async {
+                await AuthService().logout().then((value) =>
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/login', (route) => false));
+              },
             ),
           ],
         ),
       ),
-
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // First grid (Users)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserHandle()),
+                  );
+                },
+                child: GridItem(
+                  image: 'assets/img/group.png',
+                  title: 'Users',
+                  size: 180, // Adjust the size of the grid item
+                  imageSize: 60, // Adjust the size of the image
+                  fontSize: 14.0, // Adjust the size of the font
+                ),
+              ),
+              SizedBox(height: 20), // Spacer between grids
+              // Second grid (Climate Expert)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ExpertHandle()),
+                  );
+                },
+                child: GridItem(
+                  image: 'assets/img/weather-forecast.png',
+                  title: 'Climate Expert',
+                  size: 180, // Adjust the size of the grid item
+                  imageSize: 60, // Adjust the size of the image
+                  fontSize: 14.0, // Adjust the size of the font
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
+class GridItem extends StatelessWidget {
+  final String image;
+  final String title;
+  final double size;
+  final double imageSize;
+  final double fontSize;
 
+  const GridItem({
+    required this.image,
+    required this.title,
+    required this.size,
+    required this.imageSize,
+    required this.fontSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            image,
+            fit: BoxFit.cover,
+            width: imageSize,
+            height: imageSize,
+          ),
+          SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: fontSize,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}

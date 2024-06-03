@@ -66,19 +66,20 @@ class _SplashPageState extends State<SplashPage> {
             Image.asset(
               'assets/img/splash.png',
               height: 200, // Adjust the height as needed
-              width: 200, // Adjust the width as needed
+              width: 200,
+              fit: BoxFit.contain,// Adjust the width as needed
             ),
-            SizedBox(height: 10),
-            Center(
-              child: Text(
-                'Track Carbon Emission',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+            // SizedBox(height: 10),
+            // Center(
+            //   child: Text(
+            //     'Track Carbon Emission',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 20,
+            //       fontWeight: FontWeight.w500,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

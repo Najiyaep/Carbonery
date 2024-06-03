@@ -54,7 +54,7 @@ class _ActivityPageState extends State<ActivityPage> {
                               height: 40,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.teal,
+                                color: Colors.green,
                               ),
                               child: Icon(
                                 Icons.star_purple500_sharp,
@@ -74,8 +74,8 @@ class _ActivityPageState extends State<ActivityPage> {
                           ),
                           // Button
                           // Positioned(
-                          //   bottom: 30,
-                          //   left: 30,
+                          //   bottom: 0,
+                          //   left: 0,
                           //   child: ElevatedButton(
                           //     onPressed: () {
                           //       // Add your button onPressed logic here

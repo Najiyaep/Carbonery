@@ -1,11 +1,15 @@
+import 'package:carbonery/data/fetch_data.dart';
 import 'package:carbonery/screens/common/activity_page.dart';
 import 'package:carbonery/screens/common/aqi_page.dart';
 import 'package:carbonery/screens/common/article_page.dart';
 import 'package:carbonery/screens/common/community_page.dart';
 import 'package:carbonery/screens/common/my_page.dart';
+import 'package:carbonery/screens/common/my_profile.dart';
 import 'package:carbonery/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carbonery/screens/common/home_page.dart';
+
+import 'Airquality_page.dart';
 
 
 
@@ -23,10 +27,22 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   List<Widget> _widgetOptions=[
 
     HomePage(),
-    AqiPage(),
+    // FutureBuilder(
+    //     future: fetchData(),
+    //     builder: (context, snap) {
+    //       if(snap.hasData) {
+    //         return AirScreen(snap.data!);
+    //       } else {
+    //         return const Scaffold(
+    //           body: Center(
+    //             child: CircularProgressIndicator(),
+    //           ),
+    //         );
+    //       }
+    //     }
+    // ),
     CommunityPage(),
-    ArticlePage(),
-    ActivityPage(),
+    ProfilePage(),
 
 
 
@@ -60,6 +76,11 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               ListTile(
                 leading: Icon(Icons.person),
                 title: Text('Profile'),
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyPage()));
+                },
               ),
               ListTile(
                 leading: Icon(Icons.update),
@@ -68,11 +89,6 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
-                onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyPage()));
-                },
               ),
               ListTile(
                 leading: Icon(Icons.logout),
@@ -88,24 +104,24 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
         ),
 
         appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: Icon(Icons.bar_chart),
-              onPressed: () {
-
-
-                // Add your notification functionality here
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-
-
-                // Add your notification functionality here
-              },
-            ),
-          ],
+          // actions: [
+          //   IconButton(
+          //     icon: Icon(Icons.bar_chart),
+          //     onPressed: () {
+          //
+          //
+          //       // Add your notification functionality here
+          //     },
+          //   ),
+          //   IconButton(
+          //     icon: Icon(Icons.notifications),
+          //     onPressed: () {
+          //
+          //
+          //       // Add your notification functionality here
+          //     },
+          //   ),
+          // ],
         ),
 
         bottomNavigationBar: Padding(
@@ -113,7 +129,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: BottomNavigationBar(
-              selectedItemColor: Colors.green,
+              selectedItemColor: Colors.white,
               unselectedItemColor: Colors.black,
               showSelectedLabels:false,
 
@@ -128,10 +144,9 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               items: [
 
                 BottomNavigationBarItem(icon: Icon(Icons.home_outlined,color: Colors.green,),label: "Home", backgroundColor: Colors.white,),
-                BottomNavigationBarItem(icon: Icon(Icons.speed,color: Colors.green,),label: "Home", backgroundColor: Colors.white,),
-                BottomNavigationBarItem(icon: Icon(Icons.people_outlined,color: Colors.green,),label: "Bookmark", backgroundColor: Colors.white,),
-                BottomNavigationBarItem(icon: Icon(Icons.chrome_reader_mode_outlined,color: Colors.green,),label: "Profile", backgroundColor: Colors.white,),
-                BottomNavigationBarItem(icon: Icon(Icons.multiline_chart_outlined,color: Colors.green,),label: "Settings", backgroundColor: Colors.white,),
+                BottomNavigationBarItem(icon: Icon(Icons.speed,color: Colors.green,),label: "AQI", backgroundColor: Colors.white,),
+                BottomNavigationBarItem(icon: Icon(Icons.people_outlined,color: Colors.green,),label: "Community", backgroundColor: Colors.white,),
+                BottomNavigationBarItem(icon: Icon(Icons.multiline_chart_outlined,color: Colors.green,),label: "Activity", backgroundColor: Colors.white,),
 
 
               ],

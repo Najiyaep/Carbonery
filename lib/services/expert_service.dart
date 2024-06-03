@@ -45,7 +45,27 @@ class ExpertService{
       return 'Registration failed: $e'; // Return generic error message
     }
   }
+  Future<List<ExpertModel>> getAllUsers() async {
+    try {
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('expert').get();
 
+      List<ExpertModel> users = querySnapshot.docs
+          .map((doc) => ExpertModel.fromJson(doc))
+          .toList();
+      return users;
+    } catch (e) {
+      throw Exception('Failed to fetch users: $e');
+    }
+  }
+  Future<void> deleteUser(String userId) async {
+    try {
+      await FirebaseFirestore.instance.collection('expert').doc(userId).delete();
+      await FirebaseFirestore.instance.collection('login').doc(userId).delete();
+    } catch (e) {
+      throw Exception('Failed to delete user: $e');
+    }
+  }
 
 
 }

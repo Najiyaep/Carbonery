@@ -1,5 +1,6 @@
 import 'package:carbonery/services/auth_service.dart';
 import 'package:carbonery/services/user_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carbonery/screens/common/register_page.dart';
 
@@ -32,10 +33,13 @@ class _LoginPageState extends State<LoginPage> {
         title: Row(
           children: [
             SizedBox(height: 10),
-            Image.asset(
-              'assets/img/logo.png',
-              height: 200,
-              width: 200,
+            Center(
+              child: Image.asset(
+                'assets/img/logo.png',
+                height: 200,
+                width: 200,
+                fit: BoxFit.contain,
+              ),
             ),
           ],
         ),

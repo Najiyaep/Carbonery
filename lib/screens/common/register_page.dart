@@ -315,7 +315,7 @@ class _RegisterTabState extends State<RegisterTab> {
             tabs: [
               Text("User"),
               Text("Climate Expert"),
-              Text("Researcher"),
+              //Text("Researcher"),
             ],
           ),
           title: const Text('Tabs Demo'),
@@ -324,7 +324,7 @@ class _RegisterTabState extends State<RegisterTab> {
           children: [
             RegisterPage(),
             ExpertRegister(),
-            ResearchRegister(),
+            //ResearchRegister(),
           ],
         ),
       ),

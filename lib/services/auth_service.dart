@@ -40,6 +40,8 @@ class AuthService {
       _pref.setString('name', expertSnap['name']);
       _pref.setString('email', expertSnap['email']);
 
+      _pref.setString('id', expertSnap['id']);
+
       _pref.setString('role', expertSnap['role']);
 
     }else if(loginSnap['role']=="research"){
@@ -69,7 +71,7 @@ class AuthService {
       _pref.setString('token', token!);
       _pref.setString('name', userSnap['name']!);
       _pref.setString('email', userSnap['email']!);
-
+     _pref.setString('uid', userData.user!.uid);
 
 
       _pref.setString('role', userSnap['role']!);

@@ -15,7 +15,7 @@ class UserModel{
 
 
 
-  factory UserModel.fromJoson(DocumentSnapshot doc) {
+  factory UserModel.fromJson(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return UserModel(
       uid: doc.id,
