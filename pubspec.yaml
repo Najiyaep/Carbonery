@@ -38,6 +38,8 @@ dependencies:
   image_picker:
   intl:
   syncfusion_flutter_calendar:
+  flutter_rating_bar:
+  readmore:
 
 
   # The following adds the Cupertino Icons font to your application.

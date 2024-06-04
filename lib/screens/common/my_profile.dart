@@ -3,6 +3,8 @@ import 'package:carbonery/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -12,25 +14,45 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  File?_image;
+  File? _image;
   var filename;
   XFile? imageurl;
   var url;
   final ImagePicker _picker = ImagePicker();
-  imageFromGallery() async {
-    final XFile? _image =
-    await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      imageurl = _image;
-    });
+  User? _user;
+  String? _userName;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
   }
-  imageFromCamera() async {
-    final XFile? _image = await _picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      imageurl = _image;
-    });
+
+  Future<void> _fetchUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user.uid)
+          .get();
+
+      setState(() {
+        _user = user;
+        _userName = userData.data()?['name'];  // Extract the user's name
+      });
+    }
   }
-  showImagePicker() {
+
+  Future<void> _selectImage() async {
+    final imageFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (imageFile != null) {
+      setState(() {
+        _image = File(imageFile.path);
+      });
+    }
+  }
+
+  void showImagePicker() {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -53,14 +75,21 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-  Future<void> _selectImage() async {
-    final imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (imageFile != null) {
-      setState(() {
-        _image = File(imageFile.path);
-      });
-    }
+
+  Future<void> imageFromGallery() async {
+    final XFile? _image = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      imageurl = _image;
+    });
   }
+
+  Future<void> imageFromCamera() async {
+    final XFile? _image = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      imageurl = _image;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text(
                   'Edit',
                   style: TextStyle(
-                    color: Colors.orange,
+                    color: Colors.green,
                   ),
                 ),
               ),
@@ -92,24 +121,6 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // GestureDetector(
-                //   onTap:(){
-                //     showImagePicker();
-                //   },
-                //   child: CircleAvatar(
-                //    radius: 45,
-                //     child: imageurl != null
-                //         ? Image.file(File(imageurl!.path))
-                //         : Container(
-                //       color: Colors.white12,
-                //       child: Icon(
-                //         Icons.person,
-                //         size: 50,
-                //         color: Colors.grey,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 GestureDetector(
                   onTap: _selectImage,
                   child: CircleAvatar(
@@ -132,10 +143,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'name',
+                  _userName ?? 'name',  // Display the fetched user name
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.orange,
+                    color: Colors.green,
                   ),
                 ),
               ],
@@ -148,23 +159,12 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: EdgeInsets.all(5.0),
           children: [
             _buildListItem(Icons.person_outline, "Account", '/personalinfo'),
-
-            _buildListItem(Icons.history, "History", '/history'),
-
-            _buildListItem(
-                Icons.payments_outlined, "Transaction", '/mypayments'),
-
-            _buildListItem(Icons.notifications_outlined, "Notifications",
-                '/notificition'),
-
+           // _buildListItem(Icons.history, "History", '/history'),
+            _buildListItem(Icons.payments_outlined, "Transaction", '/mypayments'),
+            _buildListItem(Icons.notifications_outlined, "Notifications", '/notificition'),
             _buildListItem(Icons.lock_reset, "Reset Password", '/resetpassword'),
-
-            _buildListItem(
-                Icons.privacy_tip_outlined, "Privacy Policy", '/privacy'),
-
-            _buildListItem(
-                Icons.description, "Terms & Conditions", '/termc'),
-
+            _buildListItem(Icons.privacy_tip_outlined, "Privacy Policy", '/privacy'),
+            _buildListItem(Icons.description, "Terms & Conditions", '/termc'),
             Container(
               margin: EdgeInsets.symmetric(vertical: 5.0),
               decoration: BoxDecoration(
@@ -204,8 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           TextButton(
                             onPressed: () async {
                               await AuthService().logout().then((value) =>
-                                  Navigator.pushNamedAndRemoveUntil(context,
-                                      '/login', (route) => false));
+                                  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false));
                             },
                             child: Text("Logout"),
                           ),
@@ -224,6 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
   Widget _buildListItem(IconData icon, String text, String route) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5.0),

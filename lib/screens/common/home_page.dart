@@ -316,7 +316,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double maxConsumption = 50.0; // Set this to the maximum expected consumption value if known
-    double consumptionPercent = (totalConsumption / maxConsumption).clamp(0.0, 1.0); // Normalize to 0-1 range for percent
+    double consumptionPercent = (totalConsumption / maxConsumption).clamp(0.0, 1.0);
 
     return Scaffold(
       body: CustomScrollView(
