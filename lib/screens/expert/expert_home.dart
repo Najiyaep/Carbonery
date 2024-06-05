@@ -111,10 +111,10 @@ class _ExpertHomeState extends State<ExpertHome> {
                             0.3
                           ]; // Example progress values
                           List<String> texts = [
-                            '740Kt',
-                            '512Kt',
-                            '800kt',
-                            '370Kt',
+                            '740Kg',
+                            '512Kg',
+                            '800kg',
+                            '370Kg',
                           ];
                           List<String> subtitles = [
                             'Home Energy',

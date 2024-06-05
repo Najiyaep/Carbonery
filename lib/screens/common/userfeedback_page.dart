@@ -25,7 +25,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   Stream<List<GenReview>> fetchReviews() {
     return FirebaseFirestore.instance
-        .collection('reviews')
+        .collection('feedbacks')
         .snapshots()
         .map((snapshot) => snapshot.docs
         .map((doc) => GenReview.fromMap(doc.data()))
@@ -160,7 +160,7 @@ class _ReviewPageState extends State<ReviewPage> {
       );
 
       try {
-        await FirebaseFirestore.instance.collection('reviews').add(newReview.toMap());
+        await FirebaseFirestore.instance.collection('feedbacks').add(newReview.toMap());
         _reviewController.clear();
         setState(() {
           _rating = 0;

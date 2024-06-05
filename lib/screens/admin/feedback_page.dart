@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class FeedbackView extends StatefulWidget {
   const FeedbackView({Key? key}) : super(key: key);
@@ -13,10 +14,10 @@ class _FeedbackViewState extends State<FeedbackView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan.shade50,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.cyan.shade900,
-        title: Text("Feedbacks"),
+        backgroundColor: Colors.white,
+        title: Text("Feedbacks",style: TextStyle(color: Colors.black),),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -37,56 +38,60 @@ class _FeedbackViewState extends State<FeedbackView> {
           var feedbackDocs = snapshot.data!.docs;
 
           return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Add padding to the ListView
             itemCount: feedbackDocs.length,
             itemBuilder: (context, index) {
               var feedbackData = feedbackDocs[index].data() as Map<String, dynamic>;
-              var feedback = feedbackData['reviewText'] ?? 'Unknown feedback';
-              var username = feedbackData['userName'] ?? 'Unknown username';
+              var userName = feedbackData['userName'] ?? 'Anonymous';
+              var rating = feedbackData['rating'] ?? 0.0;
+              var reviewText = feedbackData['reviewText'] ?? '';
               var date = (feedbackData['date'] as Timestamp).toDate();
 
-              return Card(
-                elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        feedback,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'By: $username',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          Text(
-                            DateFormat('yyyy-MM-dd – kk:mm').format(date),
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
+              return buildReviewItem(userName, rating, reviewText, date);
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget buildReviewItem(String userName, double rating, String reviewText, DateTime date) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.green[50],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8.0),
+              RatingBarIndicator(
+                rating: rating,
+                itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                itemCount: 5,
+                itemSize: 20.0,
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                reviewText,
+                style: TextStyle(fontSize: 14.0),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                'Date: ${date.day}/${date.month}/${date.year}',
+                style: TextStyle(fontSize: 12.0),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

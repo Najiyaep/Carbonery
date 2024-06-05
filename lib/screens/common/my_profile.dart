@@ -125,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: _selectImage,
                   child: CircleAvatar(
                     radius: 45,
-                    backgroundColor: Color(0xffFFF5E9),
+                    backgroundColor: Colors.green[50],
                     child: _image != null
                         ? ClipOval(
                       child: Image.file(
@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     )
                         : Icon(
                       Icons.camera_alt_sharp,
-                      color: Color(0xffD77272),
+                      color: Colors.green[300],
                     ),
                   ),
                 ),
