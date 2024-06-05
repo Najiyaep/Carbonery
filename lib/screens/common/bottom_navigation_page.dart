@@ -27,20 +27,20 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   List<Widget> _widgetOptions=[
 
     HomePage(),
-    // FutureBuilder(
-    //     future: fetchData(),
-    //     builder: (context, snap) {
-    //       if(snap.hasData) {
-    //         return AirScreen(snap.data!);
-    //       } else {
-    //         return const Scaffold(
-    //           body: Center(
-    //             child: CircularProgressIndicator(),
-    //           ),
-    //         );
-    //       }
-    //     }
-    // ),
+    FutureBuilder(
+        future: fetchData(),
+        builder: (context, snap) {
+          if(snap.hasData) {
+            return AirScreen(snap.data!);
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        }
+    ),
     CommunityPage(),
     ProfilePage(),
 

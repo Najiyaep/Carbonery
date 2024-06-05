@@ -898,35 +898,35 @@ class _WastePageState extends State<WastePage> {
       ListTile(
         onTap: () {
           setState(() {
-            consumptionData[title] = 1.2;
+            consumptionData[title] = 0.2;
           });
           Navigator.pop(context);
         },
         title: Text("Low"),
         subtitle: Text("0.1-0.3kg"),
-        tileColor: consumptionData[title] == 1.2 ? Colors.blueAccent : null,
+        tileColor: consumptionData[title] == 0.2 ? Colors.blueAccent : null,
       ),
       ListTile(
         onTap: () {
           setState(() {
-            consumptionData[title] = 2.4;
+            consumptionData[title] = 0.4;
           });
           Navigator.pop(context);
         },
         title: Text("Medium"),
         subtitle: Text("0.3-0.5kg"),
-        tileColor: consumptionData[title] == 2.4 ? Colors.blueAccent : null,
+        tileColor: consumptionData[title] == 0.4 ? Colors.blueAccent : null,
       ),
       ListTile(
         onTap: () {
           setState(() {
-            consumptionData[title] = 3.5;
+            consumptionData[title] = 0.5;
           });
           Navigator.pop(context);
         },
         title: Text("High"),
         subtitle: Text("0.4-0.6kg"),
-        tileColor: consumptionData[title] == 3.5 ? Colors.blueAccent : null,
+        tileColor: consumptionData[title] == 0.5 ? Colors.blueAccent : null,
       ),
     ];
   }

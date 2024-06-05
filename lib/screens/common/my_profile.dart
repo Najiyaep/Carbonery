@@ -158,11 +158,11 @@ class _ProfilePageState extends State<ProfilePage> {
         child: ListView(
           padding: EdgeInsets.all(5.0),
           children: [
-            _buildListItem(Icons.person_outline, "Account", '/personalinfo'),
+            _buildListItem(Icons.rate_review, "Feedback", '/review'),
            // _buildListItem(Icons.history, "History", '/history'),
-            _buildListItem(Icons.payments_outlined, "Transaction", '/mypayments'),
-            _buildListItem(Icons.notifications_outlined, "Notifications", '/notificition'),
-            _buildListItem(Icons.lock_reset, "Reset Password", '/resetpassword'),
+           // _buildListItem(Icons.payments_outlined, "Transaction", '/mypayments'),
+            //_buildListItem(Icons.notifications_outlined, "Notifications", '/notificition'),
+           // _buildListItem(Icons.lock_reset, "Reset Password", '/resetpassword'),
             _buildListItem(Icons.privacy_tip_outlined, "Privacy Policy", '/privacy'),
             _buildListItem(Icons.description, "Terms & Conditions", '/termc'),
             Container(

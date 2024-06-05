@@ -261,56 +261,86 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<PieChartSectionData> showingSections() {
-    return [
-      PieChartSectionData(
-        color: Color(0xffbc4b51),
-        value: totalDietConsumption / totalConsumption * 100,
-        title: '${(totalDietConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
-        radius: touchedIndex == 0 ? 60.0 : 50.0,
-        titleStyle: TextStyle(
-          fontSize: touchedIndex == 0 ? 25.0 : 16.0,
-          fontWeight: FontWeight.bold,
-          color: AppColors.mainTextColor1,
-          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+    double totalConsumption = totalDietConsumption +
+        totalHomeConsumption +
+        totalTransportConsumption +
+        totalWasteConsumption;
+
+    if (totalConsumption == 0) {
+      return [];
+    }
+
+    List<PieChartSectionData> sections = [];
+
+    if (totalDietConsumption != null && totalDietConsumption > 0) {
+      sections.add(
+        PieChartSectionData(
+          color: const Color(0xffbc4b51),
+          value: totalDietConsumption / totalConsumption * 100,
+          title: '${(totalDietConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+          radius: touchedIndex == 0 ? 60.0 : 50.0,
+          titleStyle: TextStyle(
+            fontSize: touchedIndex == 0 ? 25.0 : 16.0,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+          ),
         ),
-      ),
-      PieChartSectionData(
-        color: Color(0xffe5c687),
-        value: totalHomeConsumption / totalConsumption * 100,
-        title: '${(totalHomeConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
-        radius: touchedIndex == 1 ? 60.0 : 50.0,
-        titleStyle: TextStyle(
-          fontSize: touchedIndex == 1 ? 25.0 : 16.0,
-          fontWeight: FontWeight.bold,
-          color: AppColors.mainTextColor1,
-          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+      );
+    }
+
+    if (totalHomeConsumption != null && totalHomeConsumption > 0) {
+      sections.add(
+        PieChartSectionData(
+          color: const Color(0xffe5c687),
+          value: totalHomeConsumption / totalConsumption * 100,
+          title: '${(totalHomeConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+          radius: touchedIndex == 1 ? 60.0 : 50.0,
+          titleStyle: TextStyle(
+            fontSize: touchedIndex == 1 ? 25.0 : 16.0,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+          ),
         ),
-      ),
-      PieChartSectionData(
-        color: Color(0xff38a3a5),
-        value: totalTransportConsumption / totalConsumption * 100,
-        title: '${(totalTransportConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
-        radius: touchedIndex == 2 ? 60.0 : 50.0,
-        titleStyle: TextStyle(
-          fontSize: touchedIndex == 2 ? 25.0 : 16.0,
-          fontWeight: FontWeight.bold,
-          color: AppColors.mainTextColor1,
-          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+      );
+    }
+
+    if (totalTransportConsumption != null && totalTransportConsumption > 0) {
+      sections.add(
+        PieChartSectionData(
+          color: const Color(0xff38a3a5),
+          value: totalTransportConsumption / totalConsumption * 100,
+          title: '${(totalTransportConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+          radius: touchedIndex == 2 ? 60.0 : 50.0,
+          titleStyle: TextStyle(
+            fontSize: touchedIndex == 2 ? 25.0 : 16.0,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+          ),
         ),
-      ),
-      PieChartSectionData(
-        color: Color(0xff6a5d7b),
-        value: totalWasteConsumption / totalConsumption * 100,
-        title: '${(totalWasteConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
-        radius: touchedIndex == 3 ? 60.0 : 50.0,
-        titleStyle: TextStyle(
-          fontSize: touchedIndex == 3 ? 25.0 : 16.0,
-          fontWeight: FontWeight.bold,
-          color: AppColors.mainTextColor1,
-          shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+      );
+    }
+
+    if (totalWasteConsumption != null && totalWasteConsumption > 0) {
+      sections.add(
+        PieChartSectionData(
+          color: const Color(0xff6a5d7b),
+          value: totalWasteConsumption / totalConsumption * 100,
+          title: '${(totalWasteConsumption / totalConsumption * 100).toStringAsFixed(1)}%',
+          radius: touchedIndex == 3 ? 60.0 : 50.0,
+          titleStyle: TextStyle(
+            fontSize: touchedIndex == 3 ? 25.0 : 16.0,
+            fontWeight: FontWeight.bold,
+            color: AppColors.mainTextColor1,
+            shadows: [Shadow(color: Colors.black, blurRadius: 2)],
+          ),
         ),
-      ),
-    ];
+      );
+    }
+
+    return sections;
   }
 
   @override

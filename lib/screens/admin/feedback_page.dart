@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class FeedbackView extends StatefulWidget {
-  const FeedbackView({super.key});
+  const FeedbackView({Key? key}) : super(key: key);
 
   @override
   State<FeedbackView> createState() => _FeedbackViewState();
@@ -19,7 +19,10 @@ class _FeedbackViewState extends State<FeedbackView> {
         title: Text("Feedbacks"),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('feedbacks').orderBy('timestamp', descending: true).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('feedbacks')
+            .orderBy('date', descending: true)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -37,9 +40,9 @@ class _FeedbackViewState extends State<FeedbackView> {
             itemCount: feedbackDocs.length,
             itemBuilder: (context, index) {
               var feedbackData = feedbackDocs[index].data() as Map<String, dynamic>;
-              var feedback = feedbackData['feedback'] ?? 'Unknown feedback';
-              var username = feedbackData['username'] ?? 'Username';
-              var timestamp = feedbackData['timestamp']?.toDate() ?? DateTime.now();
+              var feedback = feedbackData['reviewText'] ?? 'Unknown feedback';
+              var username = feedbackData['userName'] ?? 'Unknown username';
+              var date = (feedbackData['date'] as Timestamp).toDate();
 
               return Card(
                 elevation: 4,
@@ -70,7 +73,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                             ),
                           ),
                           Text(
-                            DateFormat('yyyy-MM-dd – kk:mm').format(timestamp),
+                            DateFormat('yyyy-MM-dd – kk:mm').format(date),
                             style: TextStyle(
                               color: Colors.grey[600],
                             ),

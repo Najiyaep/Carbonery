@@ -9,9 +9,12 @@ import 'package:carbonery/screens/common/bottom_navigation_page.dart';
 import 'package:carbonery/screens/common/graph_page.dart';
 import 'package:carbonery/screens/common/home_page.dart';
 import 'package:carbonery/screens/common/my_page.dart';
+import 'package:carbonery/screens/common/privacy_policy.dart';
 //import 'package:carbonery/screens/common/splash_page.dart';
 import 'package:carbonery/screens/common/register_page.dart';
 import 'package:carbonery/screens/common/splash.dart';
+import 'package:carbonery/screens/common/terms_page.dart';
+import 'package:carbonery/screens/common/userfeedback_page.dart';
 import 'package:carbonery/screens/expert/expert_home.dart';
 import 'package:carbonery/screens/expert/expert_login.dart';
 import 'package:carbonery/screens/expert/expert_register.dart';
@@ -47,8 +50,10 @@ class MyApp extends StatelessWidget {
         '/researchome': (context) => Researchome(),
         '/experthome': (context) => ExpertHome(),
         '/expertreg': (context) => ExpertRegister(),
-        '/adminhome':(context)=>AdminHome()
-
+        '/adminhome':(context)=>AdminHome(),
+        '/review':(context)=>ReviewPage(),
+        '/privacy':(context)=>PrivacyPolicyPage(),
+        '/termc':(context)=>TermsAndConditionsPage(),
      },
       debugShowCheckedModeBanner: false,
       title: 'Carbonery',
